@@ -1,19 +1,19 @@
-import { useState } from "react"
+import { useState } from "react";
 import { Form, Action, ActionPanel, showHUD, environment } from "@raycast/api";
 const urlPrefix = environment.isDevelopment ? `http://localhost:3000` : `https://pika.style`;
 
 export default function Command() {
-  const [formData, setFormData] = useState({url: "", urlError: null});
+  const [formData, setFormData] = useState({ url: "", urlError: null });
 
   const makeURL = () => {
     const prefix = `${urlPrefix}/?utm_source=Pika%20for%20Raycast(URL)&use=`;
 
-    if(!formData?.url?.startsWith("http://") && !formData?.url?.startsWith("https://")) {
+    if (!formData?.url?.startsWith("http://") && !formData?.url?.startsWith("https://")) {
       return `${prefix}https://${formData?.url}`;
     } else {
       return `${prefix}${formData?.url}`;
     }
-  }
+  };
 
   return (
     <Form

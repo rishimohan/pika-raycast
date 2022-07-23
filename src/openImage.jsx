@@ -2,7 +2,7 @@ import { Form, ActionPanel, Icon, Action, open, environment, showHUD } from "@ra
 import { Action$ } from "raycast-toolkit";
 import { useState } from "react";
 import { readFileSync, existsSync } from "fs";
-import fetch from "node-fetch"
+import fetch from "node-fetch";
 const urlPrefix = environment.isDevelopment ? `http://localhost:3000` : `https://pika.style`;
 
 const getImageUrl = async ({ file }) => {
@@ -14,11 +14,11 @@ const getImageUrl = async ({ file }) => {
     method: "POST",
     body: JSON.stringify({
       baseData: contents,
-      source: "raycast"
+      source: "raycast",
     }),
   }).then((res) => res.json());
 
-  return result
+  return result;
 };
 
 export default function Command() {
