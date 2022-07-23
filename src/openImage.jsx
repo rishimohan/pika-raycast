@@ -1,53 +1,41 @@
-import {
-  Form,
-  ActionPanel,
-  showToast,
-  ToastStyle,
-  getPreferenceValues,
-  Detail,
-  Icon,
-  Action,
-  open
-} from "@raycast/api";
+import { Form, ActionPanel, Icon, Action, open, environment, showHUD } from "@raycast/api";
 import { Action$ } from "raycast-toolkit";
 import { useState } from "react";
 import { readFileSync, existsSync } from "fs";
 import fetch from "node-fetch"
+const urlPrefix = environment.isDevelopment ? `http://localhost:3000` : `https://pika.style`;
 
+const getImageUrl = async ({ file }) => {
+  if (!existsSync(file)) {
+    return { error: "File does not exist" };
+  }
+  const contents = readFileSync(file, { encoding: "base64" });
+  const result = await fetch(`${urlPrefix}/api/addPublicImage`, {
+    method: "POST",
+    body: JSON.stringify({
+      baseData: contents,
+      source: "raycast"
+    }),
+  }).then((res) => res.json());
 
-const processFile = async ({ file }) => {
-  return new Promise(async (resolve, reject) => {
-    if (!existsSync(file)) {
-      return reject("File does not exist");
-    }
-
-    const contents = readFileSync(file, { encoding: "base64" });
-
-    const result = await fetch(`http://localhost:3000/api/addPublicImage`, {
-      method: "POST",
-      body: JSON.stringify({
-        baseData: contents,
-      }),
-    }).then(res => res.json());
-
-    resolve(result)
-  });
+  return result
 };
 
 export default function Command() {
   const [isLoading, setLoading] = useState(false);
-  const [input, setInput] = useState("");
+  const [file, setFile] = useState("");
 
   function handleSubmit() {
     setLoading(true);
 
-    processFile({ file: input })
+    getImageUrl({ file })
       .then(async (res) => {
-        console.log("Res", res)
-        await open(`https://pika.style/?use=${res?.url?.url}`);
-      })
-      .catch(error => {
-        console.log("error", error);
+        if (!res.url) {
+          await showHUD("Something went wrong, please try again");
+        } else {
+          await open(`${urlPrefix}/?use=${res?.url}`);
+          await showHUD("Opening in browser...");
+        }
       })
       .finally(() => {
         setLoading(false);
@@ -56,7 +44,7 @@ export default function Command() {
 
   return (
     <Form
-      navigationTitle={isLoading ? "🤖 Processing your image hang on..." : "pika.style"}
+      navigationTitle={isLoading ? "🤖 Processing your image..." : "pika.style"}
       isLoading={isLoading}
       actions={
         <ActionPanel>
@@ -67,7 +55,7 @@ export default function Command() {
             prompt="Please select an image"
             type="public.image"
             shortcut={{ key: "o", modifiers: ["cmd"] }}
-            onSelect={setInput}
+            onSelect={setFile}
           />
         </ActionPanel>
       }
@@ -75,8 +63,8 @@ export default function Command() {
       <Form.TextField
         id="file"
         title="Select image"
-        value={input}
-        onChange={setInput}
+        value={file}
+        onChange={setFile}
         placeholder="Enter the file path, or press ⌘ O"
       />
     </Form>
