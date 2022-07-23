@@ -34,7 +34,7 @@ export default function Command() {
           await showHUD("Something went wrong, please try again");
         } else {
           await open(`${urlPrefix}/?use=${res?.url}&utm_source=Pika%20for%20Raycast(Image)`);
-          await showHUD("Opening in browser...");
+          await showHUD("Opening in pika.style...");
         }
       })
       .finally(() => {
@@ -48,7 +48,7 @@ export default function Command() {
       isLoading={isLoading}
       actions={
         <ActionPanel>
-          <Action.SubmitForm onSubmit={handleSubmit} />
+          <Action.SubmitForm title="Open in Pika" onSubmit={handleSubmit} />
           <Action$.SelectFile
             icon={Icon.Finder}
             title="Select Image From Finder..."
@@ -65,7 +65,11 @@ export default function Command() {
         title="Select image"
         value={file}
         onChange={setFile}
-        placeholder="Enter the file path, or press ⌘ O"
+        placeholder="Enter the file path, or press ⌘+O to pick file"
+      />
+      <Form.Description
+        title="Note"
+        text="File size cannot exceed 4MB, your file will be temporarily stored on a server"
       />
     </Form>
   );
