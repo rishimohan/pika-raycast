@@ -7,27 +7,28 @@
   "author": "rishi",
   "categories": [
     "Design Tools",
-    "Web"
+    "Web",
+    "Media"
   ],
   "license": "MIT",
   "commands": [
     {
       "name": "openFromURL",
-      "title": "Open URL in Pika",
-      "subtitle": "pika.style",
+      "title": "Open URL in Pika.style",
+      "subtitle": "",
       "description": "Open website or Image URL in Pika",
       "mode": "view"
     },
     {
       "name": "openImage",
-      "title": "Open Image in Pika",
-      "subtitle": "pika.style",
+      "title": "Open Image in Pika.style",
+      "subtitle": "",
       "description": "Open Image in Pika",
       "mode": "view"
     }
   ],
   "dependencies": {
-    "@raycast/api": "^1.38.2",
+    "@raycast/api": "^1.37.1",
     "node-fetch": "^3.2.9",
     "raycast-toolkit": "^1.0.4",
     "run-applescript": "^6.0.0"
