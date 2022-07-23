@@ -6,7 +6,7 @@ export default function Command() {
   const [formData, setFormData] = useState({url: "", urlError: null});
 
   const makeURL = () => {
-    const prefix = `${urlPrefix}/?utm_source=Pika%20for%20Raycast&use=`;
+    const prefix = `${urlPrefix}/?utm_source=Pika%20for%20Raycast(URL)&use=`;
 
     if(!formData?.url?.startsWith("http://") && !formData?.url?.startsWith("https://")) {
       return `${prefix}https://${formData?.url}`;

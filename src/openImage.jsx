@@ -33,7 +33,7 @@ export default function Command() {
         if (!res.url) {
           await showHUD("Something went wrong, please try again");
         } else {
-          await open(`${urlPrefix}/?use=${res?.url}`);
+          await open(`${urlPrefix}/?use=${res?.url}&utm_source=Pika%20for%20Raycast(Image)`);
           await showHUD("Opening in browser...");
         }
       })
